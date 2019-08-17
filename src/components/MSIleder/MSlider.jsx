@@ -10,8 +10,11 @@ function MSlider(props) {
   const [elements] = useState(props.elements);
   const [animationDuration] = useState(props.duration);
 
-  function multipleClicksCheck(){
-      if (+new Date() - 1000 * animationDuration < lastClick) return false;
+  function multipleClicksCheckPrevent(){
+      if (+new Date() - 1000 * animationDuration < lastClick){
+          return false;
+      }
+      return true;
   }
   function handleSlideChange(activeElement,_activeElement) {
       SetPreviousElement(activeElement);
@@ -22,7 +25,9 @@ function MSlider(props) {
       }
   }
   function slideLeft() {
-    multipleClicksCheck();
+    if(!multipleClicksCheckPrevent()){
+        return false;
+    }
     let _activeElement = activeElement;
     if (--_activeElement === -1) {
       _activeElement = elements.length - 1;
@@ -31,7 +36,9 @@ function MSlider(props) {
     handleSlideChange(activeElement,_activeElement);
   }
   function slideRight() {
-    multipleClicksCheck();
+    if(!multipleClicksCheckPrevent()){
+        return false;
+    }
     let _activeElement = activeElement;
     if (++_activeElement === elements.length) {
       _activeElement = 0;
@@ -39,6 +46,9 @@ function MSlider(props) {
     SetDurationElement(1);
     handleSlideChange(activeElement,_activeElement);
   }
+
+  let activeClassName=duration===0?classes.activeFromLeft:classes.activeFromRight;
+  let previousClassName=duration===0?classes.previousLeft:classes.previousRight;
 
   return (
     <ul className={classes.MSlider}>
@@ -54,14 +64,10 @@ function MSlider(props) {
               classes.elements +
               " " +
               (index === activeElement
-                ? duration === 0
-                  ? classes.activeFromLeft
-                  : classes.activeFromRight
+                ? activeClassName
                 : index === previous
-                ? duration === 0
-                  ? classes.previousLeft
-                  : classes.previousRight
-                : classes.passive)
+                  ? previousClassName
+                  : classes.passive)
             }
             key={index}
             data-testid={(index===activeElement)?'activeElement':'passiveElement-'+index}

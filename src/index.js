@@ -18,7 +18,7 @@ function App() {
     <div className="App">
       <MSlider
         elements={elements}
-        duration={2}
+        duration={1}
         callback={function(a, b) {
           console.log(a, b);
         }}
