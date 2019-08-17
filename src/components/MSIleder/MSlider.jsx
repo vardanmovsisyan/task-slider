@@ -11,7 +11,7 @@ function MSlider(props) {
   const [animationDuration] = useState(props.duration);
 
   function multipleClicksCheckPrevent(){
-      if (+new Date() - 1000 * animationDuration < lastClick){
+      if (+new Date() - 1000 * 0.65 * animationDuration < lastClick){
           return false;
       }
       return true;
